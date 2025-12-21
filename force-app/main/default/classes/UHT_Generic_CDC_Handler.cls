@@ -82,7 +82,7 @@ public with sharing class UHT_Generic_CDC_Handler extends UHT_CDC_Handler {
         for (missionsf__UHT_Tracked_Object__mdt o : [
             SELECT missionsf__ObjectApiName__c
             FROM missionsf__UHT_Tracked_Object__mdt
-            WHERE missionsf__ObjectApiName__c IN :objectNames
+            WHERE IsActive__c = true AND missionsf__ObjectApiName__c IN :objectNames
         ]) {
             trackedObjects.add(o.missionsf__ObjectApiName__c);
         }
@@ -96,7 +96,7 @@ public with sharing class UHT_Generic_CDC_Handler extends UHT_CDC_Handler {
         for (missionsf__UHT_Tracked_Field__mdt f : [
             SELECT missionsf__ObjectApiName__c, missionsf__FieldApiName__c
             FROM missionsf__UHT_Tracked_Field__mdt
-            WHERE missionsf__ObjectApiName__c IN :trackedObjects
+            WHERE IsActive__c = true AND missionsf__ObjectApiName__c IN :trackedObjects
         ]) {
             trackedFieldsByObject.get(f.missionsf__ObjectApiName__c).add(f.missionsf__FieldApiName__c);
         }

@@ -12,7 +12,7 @@ private class UHT_Generic_CDC_Handler_Test {
         System.assert(
             [SELECT COUNT()
              FROM missionsf__UHT_Tracked_Object__mdt
-             WHERE missionsf__ObjectApiName__c = 'Account'] > 0,
+             WHERE IsActive__c = true AND missionsf__ObjectApiName__c = 'Account'] > 0,
             'Account must be tracked via CMDT'
         );
 
@@ -20,7 +20,7 @@ private class UHT_Generic_CDC_Handler_Test {
             2,
             [SELECT COUNT()
              FROM missionsf__UHT_Tracked_Field__mdt
-             WHERE missionsf__ObjectApiName__c = 'Account'],
+             WHERE IsActive__c = true AND missionsf__ObjectApiName__c = 'Account'],
             'Account must have exactly two tracked fields for this test'
         );
 
