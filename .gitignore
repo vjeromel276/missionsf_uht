@@ -5,6 +5,7 @@
 # Salesforce cache
 .sf/
 .sfdx/
+.vscode/*.json
 .localdevserver/
 deploy-options.json
 
@@ -47,5 +48,4 @@ $RECYCLE.BIN/
 **/__pycache__/
 **/.venv/
 **/venv/
-.vscode/settings.json
-.gitignore
+

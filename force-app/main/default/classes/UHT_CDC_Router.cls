@@ -32,5 +32,9 @@ public with sharing class UHT_CDC_Router {
 
             handler.handle(ctx);
         }
+
+        if (handler instanceof UHT_Generic_CDC_Handler) {
+            UHT_Generic_CDC_Handler.flush();
+        }
     }
 }
