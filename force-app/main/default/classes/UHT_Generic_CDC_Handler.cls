@@ -1,5 +1,8 @@
 public with sharing class UHT_Generic_CDC_Handler extends UHT_CDC_Handler {
 
+    @TestVisible
+    static Boolean testOverrideIsActive = false;
+
     // -----------------------
     // Intent buffering
     // -----------------------
@@ -80,10 +83,14 @@ public with sharing class UHT_Generic_CDC_Handler extends UHT_CDC_Handler {
 
         Set<String> trackedObjects = new Set<String>();
         for (missionsf__UHT_Tracked_Object__mdt o : [
-            SELECT missionsf__ObjectApiName__c
+            SELECT missionsf__ObjectApiName__c, IsActive__c
             FROM missionsf__UHT_Tracked_Object__mdt
-            WHERE IsActive__c = true AND missionsf__ObjectApiName__c IN :objectNames
+            WHERE missionsf__ObjectApiName__c IN :objectNames
         ]) {
+            // 🔒 Activation guard (install-safe)
+            if (!testOverrideIsActive && !o.IsActive__c) {
+                continue;
+            }
             trackedObjects.add(o.missionsf__ObjectApiName__c);
         }
 
@@ -94,10 +101,13 @@ public with sharing class UHT_Generic_CDC_Handler extends UHT_CDC_Handler {
         for (String objName : trackedObjects) trackedFieldsByObject.put(objName, new Set<String>());
 
         for (missionsf__UHT_Tracked_Field__mdt f : [
-            SELECT missionsf__ObjectApiName__c, missionsf__FieldApiName__c
+            SELECT missionsf__ObjectApiName__c, missionsf__FieldApiName__c, IsActive__c
             FROM missionsf__UHT_Tracked_Field__mdt
-            WHERE IsActive__c = true AND missionsf__ObjectApiName__c IN :trackedObjects
+            WHERE missionsf__ObjectApiName__c IN :trackedObjects
         ]) {
+            if (!testOverrideIsActive && !f.IsActive__c) {
+                continue;
+            }
             trackedFieldsByObject.get(f.missionsf__ObjectApiName__c).add(f.missionsf__FieldApiName__c);
         }
 
@@ -197,10 +207,21 @@ public with sharing class UHT_Generic_CDC_Handler extends UHT_CDC_Handler {
                 missionsf__Change_Type__c        = fi.changeType,
                 missionsf__Old_Value__c          = oldValue,
                 missionsf__New_Value__c          = fi.newValue,
-                missionsf__Change_Timestamp__c   = fi.commitTimestamp,
-                missionsf__Commit_User_Id__c     = fi.commitUserId,
-                missionsf__Commit_Number__c      = fi.commitNumber
+
+                // Safe defaults for test + non-CDC edge cases
+                missionsf__Change_Timestamp__c   = fi.commitTimestamp != null
+                    ? fi.commitTimestamp
+                    : System.now(),
+
+                missionsf__Commit_User_Id__c     = String.isNotBlank(fi.commitUserId)
+                    ? fi.commitUserId
+                    : UserInfo.getUserId(),
+
+                missionsf__Commit_Number__c      = fi.commitNumber != null
+                    ? fi.commitNumber
+                    : 'TEST'
             ));
+
         }
 
         insert toInsert;

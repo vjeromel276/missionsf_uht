@@ -12,6 +12,7 @@ public with sharing class UHT_CDC_Router {
 
         // CDC availability check (non-fatal)
         if (!UHT_CDC_Availability.isEnabledForObject(entityName)) {
+            System.debug(LoggingLevel.FINE,'UHT: CDC not enabled for ' + entityName + ', skipping events');
             // CDC not enabled for this object — silently skip
             return;
         }
