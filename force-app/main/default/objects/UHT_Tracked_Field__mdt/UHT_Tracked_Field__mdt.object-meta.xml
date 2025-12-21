@@ -3,20 +3,4 @@
     <label>UHT Tracked Field</label>
     <pluralLabel>UHT Tracked Fields</pluralLabel>
     <visibility>Public</visibility>
-
-    <fields>
-        <fullName>ObjectApiName__c</fullName>
-        <label>Object API Name</label>
-        <type>Text</type>
-        <length>80</length>
-        <required>true</required>
-    </fields>
-
-    <fields>
-        <fullName>FieldApiName__c</fullName>
-        <label>Field API Name</label>
-        <type>Text</type>
-        <length>80</length>
-        <required>true</required>
-    </fields>
 </CustomObject>

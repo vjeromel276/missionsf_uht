@@ -8,18 +8,18 @@ public abstract class UHT_CDC_Handler {
 
         public CDCContext(Map<String, Object> payload) {
             Object hdr = payload.get('ChangeEventHeader');
-        if (hdr != null) {
-            Map<String, Object> header =
-                (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(hdr));
+            if (hdr != null) {
+                Map<String, Object> header =
+                    (Map<String, Object>) JSON.deserializeUntyped(JSON.serialize(hdr));
 
-            entityName = (String) header.get('entityName');
-            changeType = (String) header.get('changeType');
+                entityName = (String) header.get('entityName');
+                changeType = (String) header.get('changeType');
 
-            Object rid = header.get('recordIds');
-            if (rid instanceof List<Object> && !((List<Object>)rid).isEmpty()) {
-                recordId = (Id) ((List<Object>)rid)[0];
+                Object rid = header.get('recordIds');
+                if (rid instanceof List<Object> && !((List<Object>)rid).isEmpty()) {
+                    recordId = (Id) ((List<Object>)rid)[0];
+                }
             }
-        }
 
         }
     }
