@@ -11978,6 +11978,8 @@ public class MetadataService {
         public String stateDetail;
         public String status;
         public Boolean success;
+        public Long zipSize;
+        public Long zipFileTotalSize;
         private String[] canceledBy_type_info = new String[]{'canceledBy',SOAP_M_URI,null,'0','1','false'};
         private String[] canceledByName_type_info = new String[]{'canceledByName',SOAP_M_URI,null,'0','1','false'};
         private String[] checkOnly_type_info = new String[]{'checkOnly',SOAP_M_URI,null,'1','1','false'};
@@ -12006,8 +12008,10 @@ public class MetadataService {
         private String[] stateDetail_type_info = new String[]{'stateDetail',SOAP_M_URI,null,'0','1','false'};
         private String[] status_type_info = new String[]{'status',SOAP_M_URI,null,'1','1','false'};
         private String[] success_type_info = new String[]{'success',SOAP_M_URI,null,'1','1','false'};
+        private String[] zipSize_type_info = new String[]{'zipSize',SOAP_M_URI,null,'0','1','false'};
+        private String[] zipFileTotalSize_type_info = new String[]{'zipFileTotalSize',SOAP_M_URI,null,'0','1','false'};
         private String[] apex_schema_type_info = new String[]{SOAP_M_URI,'true','false'};
-        private String[] field_order_type_info = new String[]{'canceledBy','canceledByName','checkOnly','completedDate','createdBy','createdByName','createdDate','details','done','errorMessage','errorStatusCode','id','ignoreWarnings','lastModifiedDate','numberComponentErrors','numberComponentsDeployed','numberComponentsTotal','numberFiles','numberFilesTotal','numberTestErrors','numberTestsCompleted','numberTestsTotal','rollbackOnError','runTestsEnabled','startDate','stateDetail','status','success'};
+        private String[] field_order_type_info = new String[]{'canceledBy','canceledByName','checkOnly','completedDate','createdBy','createdByName','createdDate','details','done','errorMessage','errorStatusCode','id','ignoreWarnings','lastModifiedDate','numberComponentErrors','numberComponentsDeployed','numberComponentsTotal','numberFiles','numberFilesTotal','numberTestErrors','numberTestsCompleted','numberTestsTotal','rollbackOnError','runTestsEnabled','startDate','stateDetail','status','success','zipSize','zipFileTotalSize'};
     }
     public class IdeaReputationLevel {
         public String name;

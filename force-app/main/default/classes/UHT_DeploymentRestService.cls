@@ -10,6 +10,59 @@
 global with sharing class UHT_DeploymentRestService {
 
     /**
+     * Get CDC-enabled objects via Tooling API
+     * GET /services/apexrest/uht/deploy
+     */
+    @HttpGet
+    global static CDCStatusResult getCDCEnabledObjects() {
+        CDCStatusResult result = new CDCStatusResult();
+        
+        try {
+            // Query Tooling API for PlatformEventChannelMember
+            String baseUrl = URL.getOrgDomainUrl().toExternalForm();
+            String query = 'SELECT Id, SelectedEntity FROM PlatformEventChannelMember';
+            String endpoint = baseUrl + '/services/data/v65.0/tooling/query/?q=' + EncodingUtil.urlEncode(query, 'UTF-8');
+            
+            HttpRequest req = new HttpRequest();
+            req.setEndpoint(endpoint);
+            req.setMethod('GET');
+            req.setHeader('Authorization', 'Bearer ' + UserInfo.getSessionId());
+            req.setHeader('Content-Type', 'application/json');
+            
+            Http http = new Http();
+            HttpResponse res = http.send(req);
+            
+            if (res.getStatusCode() == 200) {
+                Map<String, Object> responseMap = (Map<String, Object>) JSON.deserializeUntyped(res.getBody());
+                List<Object> records = (List<Object>) responseMap.get('records');
+                
+                Set<String> enabledObjects = new Set<String>();
+                for (Object record : records) {
+                    Map<String, Object> rec = (Map<String, Object>) record;
+                    String selectedEntity = (String) rec.get('SelectedEntity');
+                    // SelectedEntity is like "AccountChangeEvent" - extract object name
+                    if (selectedEntity != null && selectedEntity.endsWith('ChangeEvent')) {
+                        String objectName = selectedEntity.replace('ChangeEvent', '');
+                        enabledObjects.add(objectName);
+                    }
+                }
+                
+                result.success = true;
+                result.enabledObjects = new List<String>(enabledObjects);
+            } else {
+                result.success = false;
+                result.errorMessage = 'Tooling API returned: ' + res.getStatusCode() + ' - ' + res.getBody();
+            }
+            
+        } catch (Exception e) {
+            result.success = false;
+            result.errorMessage = e.getMessage();
+        }
+        
+        return result;
+    }
+
+    /**
      * Deploy a trigger for the specified object
      * POST /services/apexrest/uht/deploy
      * Body: { "objectApiName": "Account" }
@@ -54,7 +107,16 @@ global with sharing class UHT_DeploymentRestService {
     }
     
     /**
-     * Response wrapper
+     * Response wrapper for CDC status
+     */
+    global class CDCStatusResult {
+        public Boolean success;
+        public List<String> enabledObjects;
+        public String errorMessage;
+    }
+    
+    /**
+     * Response wrapper for deployment
      */
     global class DeploymentResult {
         public Boolean success;

@@ -60,6 +60,25 @@
     --sds-c-badge-text-color: #ffffff;
 }
 
+.cdc-status {
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.75rem;
+    padding: 0.125rem 0.5rem;
+    border-radius: 4px;
+    margin-right: 0.5rem;
+}
+
+.cdc-enabled {
+    background-color: #e8f4e8;
+    color: #2e844a;
+}
+
+.cdc-disabled {
+    background-color: #fce8e8;
+    color: #c23934;
+}
+
 .fields-section {
     background-color: #fafaf9;
     border-top: 1px solid #dddbda;

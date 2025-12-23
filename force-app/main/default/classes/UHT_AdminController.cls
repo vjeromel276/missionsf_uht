@@ -70,7 +70,8 @@ public with sharing class UHT_AdminController {
     /**
      * Get all available objects that could potentially be tracked.
      * Returns standard objects known to support CDC + all custom objects.
-     * Note: Not cacheable because it makes HTTP callout to check CDC status.
+     * CDC status shows capability (whether the object supports CDC), not actual enablement.
+     * Users should verify CDC is enabled in Setup before tracking.
      */
     @AuraEnabled
     public static List<ObjectInfo> getAvailableObjects() {
@@ -119,13 +120,14 @@ public with sharing class UHT_AdminController {
             if (includeObject) {
                 // Use the proper API name from describe (preserves correct casing)
                 String properApiName = dsr.getName();
-                Boolean cdcEnabled = UHT_CDC_Availability.isEnabledForObject(properApiName);
+                // Check CDC capability via Schema (not actual enablement)
+                Boolean cdcCapable = UHT_CDC_Availability.isEnabledForObject(properApiName);
                 Boolean isTracked = trackedObjectNames.contains(properApiName);
 
                 results.add(new ObjectInfo(
                     properApiName,
                     dsr.getLabel(),
-                    cdcEnabled,
+                    cdcCapable,  // This indicates capability, not actual enablement
                     isTracked,
                     isCustom
                 ));
