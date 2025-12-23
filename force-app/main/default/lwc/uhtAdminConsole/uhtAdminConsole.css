@@ -1,0 +1,90 @@
+.object-list {
+    max-height: 60vh;
+    overflow-y: auto;
+}
+
+.object-item {
+    background-color: #ffffff;
+    border: 1px solid #dddbda;
+    border-radius: 4px;
+    transition: background-color 0.15s ease;
+}
+
+.object-item:hover {
+    background-color: #f3f3f3;
+}
+
+.object-header {
+    cursor: pointer;
+    padding: 0.5rem;
+    min-height: 2.5rem;
+}
+
+.expand-icon {
+    color: #706e6b;
+}
+
+.object-label {
+    font-weight: 600;
+    color: #080707;
+}
+
+.object-api-name {
+    font-size: 0.75rem;
+    color: #706e6b;
+}
+
+.status-indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    border-radius: 50%;
+    font-size: 0.75rem;
+    font-weight: bold;
+}
+
+.status-enabled {
+    background-color: #2e844a;
+    color: #ffffff;
+}
+
+.status-disabled {
+    background-color: #c23934;
+    color: #ffffff;
+}
+
+.badge-tracked {
+    --sds-c-badge-color-background: #0176d3;
+    --sds-c-badge-text-color: #ffffff;
+}
+
+.fields-section {
+    background-color: #fafaf9;
+    border-top: 1px solid #dddbda;
+}
+
+.fields-grid {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.saving-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 255, 255, 0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+}
+
+/* Checkbox alignment fix */
+.object-checkbox {
+    margin-top: -0.25rem;
+}

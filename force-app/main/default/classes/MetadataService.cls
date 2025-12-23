@@ -11967,6 +11967,8 @@ public class MetadataService {
         public Integer numberComponentErrors;
         public Integer numberComponentsDeployed;
         public Integer numberComponentsTotal;
+        public Integer numberFiles;
+        public Integer numberFilesTotal;
         public Integer numberTestErrors;
         public Integer numberTestsCompleted;
         public Integer numberTestsTotal;
@@ -11993,6 +11995,8 @@ public class MetadataService {
         private String[] numberComponentErrors_type_info = new String[]{'numberComponentErrors',SOAP_M_URI,null,'1','1','false'};
         private String[] numberComponentsDeployed_type_info = new String[]{'numberComponentsDeployed',SOAP_M_URI,null,'1','1','false'};
         private String[] numberComponentsTotal_type_info = new String[]{'numberComponentsTotal',SOAP_M_URI,null,'1','1','false'};
+        private String[] numberFiles_type_info = new String[]{'numberFiles',SOAP_M_URI,null,'0','1','false'};
+        private String[] numberFilesTotal_type_info = new String[]{'numberFilesTotal',SOAP_M_URI,null,'0','1','false'};
         private String[] numberTestErrors_type_info = new String[]{'numberTestErrors',SOAP_M_URI,null,'1','1','false'};
         private String[] numberTestsCompleted_type_info = new String[]{'numberTestsCompleted',SOAP_M_URI,null,'1','1','false'};
         private String[] numberTestsTotal_type_info = new String[]{'numberTestsTotal',SOAP_M_URI,null,'1','1','false'};
@@ -12003,7 +12007,7 @@ public class MetadataService {
         private String[] status_type_info = new String[]{'status',SOAP_M_URI,null,'1','1','false'};
         private String[] success_type_info = new String[]{'success',SOAP_M_URI,null,'1','1','false'};
         private String[] apex_schema_type_info = new String[]{SOAP_M_URI,'true','false'};
-        private String[] field_order_type_info = new String[]{'canceledBy','canceledByName','checkOnly','completedDate','createdBy','createdByName','createdDate','details','done','errorMessage','errorStatusCode','id','ignoreWarnings','lastModifiedDate','numberComponentErrors','numberComponentsDeployed','numberComponentsTotal','numberTestErrors','numberTestsCompleted','numberTestsTotal','rollbackOnError','runTestsEnabled','startDate','stateDetail','status','success'};
+        private String[] field_order_type_info = new String[]{'canceledBy','canceledByName','checkOnly','completedDate','createdBy','createdByName','createdDate','details','done','errorMessage','errorStatusCode','id','ignoreWarnings','lastModifiedDate','numberComponentErrors','numberComponentsDeployed','numberComponentsTotal','numberFiles','numberFilesTotal','numberTestErrors','numberTestsCompleted','numberTestsTotal','rollbackOnError','runTestsEnabled','startDate','stateDetail','status','success'};
     }
     public class IdeaReputationLevel {
         public String name;

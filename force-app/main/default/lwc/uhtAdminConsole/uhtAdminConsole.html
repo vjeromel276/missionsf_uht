@@ -1,0 +1,170 @@
+<template>
+    <lightning-card title="Ultimate History Tracker - Admin Console" icon-name="custom:custom18">
+        
+        <!-- Header with counts -->
+        <div slot="actions">
+            <span class="slds-text-body_small slds-m-right_medium">
+                {selectedObjectCount} of {totalObjectCount} objects selected
+            </span>
+            <lightning-button 
+                label="Cancel" 
+                onclick={handleCancel}
+                disabled={isLoading}
+                class="slds-m-right_x-small">
+            </lightning-button>
+            <lightning-button 
+                label={saveButtonLabel} 
+                variant="brand" 
+                onclick={handleSave}
+                disabled={isLoading}>
+            </lightning-button>
+        </div>
+
+        <!-- Loading spinner -->
+        <template if:true={isLoading}>
+            <div class="slds-is-relative slds-p-around_large">
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </div>
+        </template>
+
+        <!-- Main content -->
+        <template if:false={isLoading}>
+            <div class="slds-p-around_medium">
+                
+                <!-- Instructions -->
+                <div class="slds-box slds-box_x-small slds-theme_info slds-m-bottom_medium">
+                    <p class="slds-text-body_small">
+                        <lightning-icon icon-name="utility:info" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                        Select objects and fields to track. Ensure CDC is enabled in Setup for each object before saving.
+                    </p>
+                </div>
+
+                <!-- Object accordion list -->
+                <div class="object-list">
+                    <template for:each={objects} for:item="obj">
+                        <div key={obj.apiName} class="object-item slds-box slds-box_x-small slds-m-bottom_x-small">
+                            
+                            <!-- Object header row -->
+                            <div class="object-header slds-grid slds-grid_vertical-align-center" 
+                                 data-object-name={obj.apiName} 
+                                 onclick={handleObjectClick}>
+                                
+                                <!-- Expand/collapse icon -->
+                                <div class="slds-col slds-size_1-of-12">
+                                    <lightning-icon 
+                                        icon-name={obj.expandIcon}
+                                        size="x-small"
+                                        class="expand-icon">
+                                    </lightning-icon>
+                                </div>
+
+                                <!-- Checkbox -->
+                                <div class="slds-col slds-size_1-of-12" onclick={handleObjectCheckboxChange}>
+                                    <lightning-input 
+                                        type="checkbox" 
+                                        data-object-name={obj.apiName}
+                                        checked={obj.isSelected}
+                                        onchange={handleObjectCheckboxChange}
+                                        label=""
+                                        class="object-checkbox">
+                                    </lightning-input>
+                                </div>
+
+                                <!-- Object label and API name -->
+                                <div class="slds-col slds-size_7-of-12">
+                                    <span class="object-label">{obj.label}</span>
+                                    <span class="object-api-name slds-m-left_x-small">({obj.apiName})</span>
+                                </div>
+
+                                <!-- Custom object badge -->
+                                <div class="slds-col slds-size_3-of-12">
+                                    <template if:true={obj.isCustom}>
+                                        <lightning-badge label="Custom" class="slds-m-left_x-small"></lightning-badge>
+                                    </template>
+                                    <template if:true={obj.isTracked}>
+                                        <lightning-badge label="Tracked" class="badge-tracked slds-m-left_x-small"></lightning-badge>
+                                    </template>
+                                </div>
+                            </div>
+
+                            <!-- Expanded fields section -->
+                            <template if:true={obj.isExpanded}>
+                                <div class="fields-section slds-p-left_xx-large slds-p-top_small slds-p-bottom_small">
+                                    
+                                    <!-- Fields loading -->
+                                    <template if:false={obj.fieldsLoaded}>
+                                        <lightning-spinner alternative-text="Loading fields..." size="small"></lightning-spinner>
+                                    </template>
+
+                                    <!-- Fields list -->
+                                    <template if:true={obj.fieldsLoaded}>
+                                        
+                                        <!-- Select all toggle -->
+                                        <div class="slds-m-bottom_small">
+                                            <lightning-button
+                                                label="Toggle All Fields"
+                                                variant="base"
+                                                data-object-name={obj.apiName}
+                                                onclick={handleSelectAllFields}
+                                                disabled={obj.fieldsDisabled}>
+                                            </lightning-button>
+                                            <span class="slds-text-body_small slds-m-left_small">
+                                                {obj.fields.length} trackable fields
+                                            </span>
+                                        </div>
+
+                                        <!-- No fields message -->
+                                        <template if:false={obj.fields.length}>
+                                            <p class="slds-text-body_small slds-text-color_weak">
+                                                No trackable fields found for this object.
+                                            </p>
+                                        </template>
+
+                                        <!-- Field checkboxes grid -->
+                                        <template if:true={obj.fields.length}>
+                                            <div class="fields-grid slds-grid slds-wrap">
+                                                <template for:each={obj.fields} for:item="field">
+                                                    <div key={field.apiName} class="slds-col slds-size_1-of-3 slds-p-around_xx-small">
+                                                        <lightning-input 
+                                                            type="checkbox"
+                                                            data-object-name={obj.apiName}
+                                                            data-field-name={field.apiName}
+                                                            checked={field.isSelected}
+                                                            onchange={handleFieldCheckboxChange}
+                                                            label={field.label}
+                                                            disabled={obj.fieldsDisabled}
+                                                            title={field.apiName}>
+                                                        </lightning-input>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+
+                <!-- Empty state -->
+                <template if:false={objects.length}>
+                    <div class="slds-illustration slds-illustration_small slds-p-around_large">
+                        <p class="slds-text-body_regular slds-text-color_weak">
+                            No CDC-capable objects found.
+                        </p>
+                    </div>
+                </template>
+
+            </div>
+        </template>
+
+        <!-- Saving overlay -->
+        <template if:true={isSaving}>
+            <div class="saving-overlay">
+                <lightning-spinner alternative-text="Saving..." size="large"></lightning-spinner>
+                <p class="slds-text-heading_small slds-m-top_medium">Deploying configuration...</p>
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

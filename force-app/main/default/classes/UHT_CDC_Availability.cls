@@ -1,8 +1,15 @@
+/**
+ * UHT_CDC_Availability
+ * 
+ * Checks if an object is CDC-capable by checking if its ChangeEvent type exists.
+ * Note: This checks capability, not whether CDC is actually enabled in Setup.
+ * Actual CDC enablement is validated at trigger deployment time.
+ */
 public with sharing class UHT_CDC_Availability {
 
     /**
-     * Returns true if CDC is enabled for the given object
-     * Example input: 'Account'
+     * Returns true if the object supports CDC (ChangeEvent type exists)
+     * Example input: 'Account' returns true if AccountChangeEvent schema exists
      */
     public static Boolean isEnabledForObject(String objectApiName) {
         if (String.isBlank(objectApiName)) {

@@ -207,6 +207,50 @@ public with sharing class UHT_TriggerDeploymentService {
         };
     }
 
+        /**
+     * Deploy a CDC trigger with provided session ID
+     * Used when session ID is obtained externally (e.g., from Named Credential context)
+     */
+    public static Id deployTriggerWithSession(String objectApiName, String sessionId) {
+        // Validate input
+        if (String.isBlank(objectApiName)) {
+            throw new DeploymentException('Object API name is required');
+        }
+        
+        if (String.isBlank(sessionId)) {
+            throw new DeploymentException('Session ID is required');
+        }
+
+        // Check if trigger already exists
+        if (triggerExists(objectApiName)) {
+            throw new DeploymentException('Trigger already exists for ' + objectApiName);
+        }
+
+        // Generate trigger files
+        UHT_TriggerGenerator.TriggerFiles files = UHT_TriggerGenerator.generate(objectApiName);
+
+        // Build the deployment zip
+        Blob zipBlob = buildDeploymentZip(files);
+
+        // Deploy via Metadata API
+        String deploymentId = deployToMetadataApi(zipBlob, sessionId);
+
+        // Create deployment log record
+        missionsf__UHT_Deployment_Log__c logRecord = new missionsf__UHT_Deployment_Log__c(
+            missionsf__Object_Name__c = objectApiName,
+            missionsf__Trigger_Name__c = files.triggerName,
+            missionsf__Status__c = 'In Progress',
+            missionsf__Deployment_Id__c = deploymentId,
+            missionsf__Initiated_At__c = Datetime.now()
+        );
+        insert logRecord;
+
+        // Queue the status poller
+        System.enqueueJob(new UHT_DeploymentStatusPoller(logRecord.Id, deploymentId, sessionId));
+
+        return logRecord.Id;
+    }
+
     /**
      * Entry point for LWC - deploy trigger for object
      */
