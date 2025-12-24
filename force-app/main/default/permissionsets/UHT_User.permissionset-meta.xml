@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <label>UHT User</label>
+    <description>Read-only access to Ultimate History Tracker change logs. Allows users to view field change history.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <license>Salesforce</license>
+
+    <!-- UHT Change Log - Read Only -->
+    <objectPermissions>
+        <object>UHT_Change_Log__c</object>
+        <allowCreate>false</allowCreate>
+        <allowDelete>false</allowDelete>
+        <allowEdit>false</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>false</modifyAllRecords>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+
+    <!-- UHT Change Log Fields - Read Only -->
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Change_Timestamp__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Change_Type__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Commit_Number__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Commit_User_Id__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.New_Value__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Old_Value__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Tracked_Field__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Tracked_Object__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <field>UHT_Change_Log__c.Tracked_Record_Id__c</field>
+        <editable>false</editable>
+        <readable>true</readable>
+    </fieldPermissions>
+
+    <!-- Tab Visibility - Change Logs Only -->
+    <tabSettings>
+        <tab>UHT_Change_Log__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+
+</PermissionSet>
