@@ -32,11 +32,7 @@
         <editable>false</editable>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <field>UHT_Change_Log__c.Commit_User_Id__c</field>
-        <editable>false</editable>
-        <readable>true</readable>
-    </fieldPermissions>
+
     <fieldPermissions>
         <field>UHT_Change_Log__c.New_Value__c</field>
         <editable>false</editable>
@@ -47,21 +43,9 @@
         <editable>false</editable>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <field>UHT_Change_Log__c.Tracked_Field__c</field>
-        <editable>false</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>UHT_Change_Log__c.Tracked_Object__c</field>
-        <editable>false</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>UHT_Change_Log__c.Tracked_Record_Id__c</field>
-        <editable>false</editable>
-        <readable>true</readable>
-    </fieldPermissions>
+
+
+
 
     <!-- Tab Visibility - Change Logs Only -->
     <tabSettings>
