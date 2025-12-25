@@ -141,16 +141,8 @@
         <editable>true</editable>
         <readable>true</readable>
     </fieldPermissions>
-    <fieldPermissions>
-        <field>UHT_Deployment_Log__c.Object_Name__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
-    <fieldPermissions>
-        <field>UHT_Deployment_Log__c.Status__c</field>
-        <editable>true</editable>
-        <readable>true</readable>
-    </fieldPermissions>
+
+
     <fieldPermissions>
         <field>UHT_Deployment_Log__c.Trigger_Name__c</field>
         <editable>true</editable>
