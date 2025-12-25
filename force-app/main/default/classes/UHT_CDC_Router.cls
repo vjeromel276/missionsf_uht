@@ -6,7 +6,7 @@
  */
 global with sharing class UHT_CDC_Router {
 
-    public static void route(List<SObject> events) {
+    global static void route(List<SObject> events) {
         if (events == null || events.isEmpty()) {
             return;
         }

@@ -4,6 +4,18 @@
     <description>Full access to Ultimate History Tracker: configure tracking, deploy triggers, and view change logs.</description>
     <hasActivationRequired>false</hasActivationRequired>
     <license>Salesforce</license>
+    <classAccesses>
+        <apexClass>MetadataService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>UHT_Tracked_Field__mdt</name>
+    </customMetadataTypeAccesses>
+    <customMetadataTypeAccesses>
+        <enabled>true</enabled>
+        <name>UHT_Tracked_Object__mdt</name>
+    </customMetadataTypeAccesses>
 
     <!-- Apex Class Access -->
     <classAccesses>
