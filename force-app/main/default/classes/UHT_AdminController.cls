@@ -306,17 +306,19 @@ public with sharing class UHT_AdminController {
 
         // =========================================================================
         // STEP 2: Build and deploy custom metadata
+        // NOTE: Do NOT use namespace prefix on field references - Salesforce resolves
+        // them automatically when running inside a managed package context.
         // =========================================================================
         Metadata.DeployContainer container = new Metadata.DeployContainer();
 
         // Process objects to ACTIVATE
         for (String objectApiName : objectsToActivate) {
             Metadata.CustomMetadata objMd = new Metadata.CustomMetadata();
-            objMd.fullName = 'missionsf__UHT_Tracked_Object__mdt.' + sanitizeForMetadata(objectApiName);
+            objMd.fullName = 'UHT_Tracked_Object__mdt.' + sanitizeForMetadata(objectApiName);
             objMd.label = getMetadataLabel(objectApiName);
 
             Metadata.CustomMetadataValue objApiNameValue = new Metadata.CustomMetadataValue();
-            objApiNameValue.field = 'missionsf__ObjectApiName__c';
+            objApiNameValue.field = 'ObjectApiName__c';
             objApiNameValue.value = objectApiName;
             objMd.values.add(objApiNameValue);
 
@@ -331,11 +333,11 @@ public with sharing class UHT_AdminController {
         // Process objects to DEACTIVATE
         for (String objectApiName : objectsToDeactivate) {
             Metadata.CustomMetadata objMd = new Metadata.CustomMetadata();
-            objMd.fullName = 'missionsf__UHT_Tracked_Object__mdt.' + sanitizeForMetadata(objectApiName);
+            objMd.fullName = 'UHT_Tracked_Object__mdt.' + sanitizeForMetadata(objectApiName);
             objMd.label = getMetadataLabel(objectApiName);
 
             Metadata.CustomMetadataValue objApiNameValue = new Metadata.CustomMetadataValue();
-            objApiNameValue.field = 'missionsf__ObjectApiName__c';
+            objApiNameValue.field = 'ObjectApiName__c';
             objApiNameValue.value = objectApiName;
             objMd.values.add(objApiNameValue);
 
@@ -352,17 +354,17 @@ public with sharing class UHT_AdminController {
             List<String> fields = fieldsToActivate.get(objectApiName);
             for (String fieldApiName : fields) {
                 Metadata.CustomMetadata fieldMd = new Metadata.CustomMetadata();
-                fieldMd.fullName = 'missionsf__UHT_Tracked_Field__mdt.' + 
+                fieldMd.fullName = 'UHT_Tracked_Field__mdt.' + 
                     sanitizeForMetadata(objectApiName) + '_' + sanitizeForMetadata(fieldApiName);
                 fieldMd.label = getMetadataLabel(objectApiName) + ' ' + getMetadataLabel(fieldApiName);
 
                 Metadata.CustomMetadataValue fieldObjValue = new Metadata.CustomMetadataValue();
-                fieldObjValue.field = 'missionsf__ObjectApiName__c';
+                fieldObjValue.field = 'ObjectApiName__c';
                 fieldObjValue.value = objectApiName;
                 fieldMd.values.add(fieldObjValue);
 
                 Metadata.CustomMetadataValue fieldNameValue = new Metadata.CustomMetadataValue();
-                fieldNameValue.field = 'missionsf__FieldApiName__c';
+                fieldNameValue.field = 'FieldApiName__c';
                 fieldNameValue.value = fieldApiName;
                 fieldMd.values.add(fieldNameValue);
 
@@ -380,17 +382,17 @@ public with sharing class UHT_AdminController {
             List<String> fields = fieldsToDeactivate.get(objectApiName);
             for (String fieldApiName : fields) {
                 Metadata.CustomMetadata fieldMd = new Metadata.CustomMetadata();
-                fieldMd.fullName = 'missionsf__UHT_Tracked_Field__mdt.' + 
+                fieldMd.fullName = 'UHT_Tracked_Field__mdt.' + 
                     sanitizeForMetadata(objectApiName) + '_' + sanitizeForMetadata(fieldApiName);
                 fieldMd.label = getMetadataLabel(objectApiName) + ' ' + getMetadataLabel(fieldApiName);
 
                 Metadata.CustomMetadataValue fieldObjValue = new Metadata.CustomMetadataValue();
-                fieldObjValue.field = 'missionsf__ObjectApiName__c';
+                fieldObjValue.field = 'ObjectApiName__c';
                 fieldObjValue.value = objectApiName;
                 fieldMd.values.add(fieldObjValue);
 
                 Metadata.CustomMetadataValue fieldNameValue = new Metadata.CustomMetadataValue();
-                fieldNameValue.field = 'missionsf__FieldApiName__c';
+                fieldNameValue.field = 'FieldApiName__c';
                 fieldNameValue.value = fieldApiName;
                 fieldMd.values.add(fieldNameValue);
 
