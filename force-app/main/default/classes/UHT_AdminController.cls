@@ -306,6 +306,9 @@ public with sharing class UHT_AdminController {
 
         // =========================================================================
         // STEP 2: Build and deploy custom metadata
+        // NOTE: fullName requires namespace prefix to identify the managed CMT type.
+        // Field references do NOT need namespace prefix - Salesforce resolves them
+        // automatically when running inside a managed package context.
         // =========================================================================
         Metadata.DeployContainer container = new Metadata.DeployContainer();
 
@@ -457,7 +460,7 @@ public with sharing class UHT_AdminController {
         for (missionsf__UHT_Tracked_Object__mdt obj : [
             SELECT missionsf__ObjectApiName__c 
             FROM missionsf__UHT_Tracked_Object__mdt 
-            WHERE missionsf__IsActive__c = true
+            WHERE IsActive__c = true
         ]) {
             names.add(obj.missionsf__ObjectApiName__c);
         }
@@ -473,7 +476,7 @@ public with sharing class UHT_AdminController {
             SELECT missionsf__FieldApiName__c 
             FROM missionsf__UHT_Tracked_Field__mdt 
             WHERE missionsf__ObjectApiName__c = :objectApiName
-              AND missionsf__IsActive__c = true
+              AND IsActive__c = true
         ]) {
             names.add(fld.missionsf__FieldApiName__c);
         }
@@ -497,7 +500,17 @@ public with sharing class UHT_AdminController {
         
         String result = input.trim();
         
-        // Step 1: Strip namespace prefix (e.g., missionsf__)
+        // Step 1: Strip __c, __r, __e, __x, __b suffixes FIRST
+        // (Must happen before namespace check to avoid treating object name as namespace)
+        if (result.endsWith('__c') || result.endsWith('__r') || 
+            result.endsWith('__e') || result.endsWith('__x') || 
+            result.endsWith('__b')) {
+            result = result.substring(0, result.length() - 3);
+        } else if (result.endsWith('__mdt')) {
+            result = result.substring(0, result.length() - 5);
+        }
+        
+        // Step 2: Strip namespace prefix (e.g., missionsf__)
         if (result.contains('__')) {
             Integer idx = result.indexOf('__');
             String beforeDouble = result.substring(0, idx);
@@ -505,15 +518,6 @@ public with sharing class UHT_AdminController {
             if (beforeDouble.isAlphanumeric() && beforeDouble.length() > 0 && beforeDouble.substring(0, 1).isAlpha()) {
                 result = result.substring(idx + 2);
             }
-        }
-        
-        // Step 2: Strip __c, __r, __e, __x, __b suffixes
-        if (result.endsWith('__c') || result.endsWith('__r') || 
-            result.endsWith('__e') || result.endsWith('__x') || 
-            result.endsWith('__b')) {
-            result = result.substring(0, result.length() - 3);
-        } else if (result.endsWith('__mdt')) {
-            result = result.substring(0, result.length() - 5);
         }
         
         // Step 3: Ensure doesn't start with number
