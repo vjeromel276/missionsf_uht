@@ -11,9 +11,6 @@
     "lightningExperienceSettings": {
       "enableS1DesktopEnabled": true
     },
-    "eventManagerSettings": {
-      "enableChangeDataCapture": true
-    },
     "securitySettings": {
       "enableAdminLoginAsAnyUser": true
     }
